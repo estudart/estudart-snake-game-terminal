@@ -12,6 +12,7 @@ class GameBoard(Static):
         super().__init__()
         self.game_timer = None
         self.direction = "right"
+        self.prev_direction = None
         self.width = 60
         self.height = 20
         self.speed = 0.3
@@ -46,10 +47,14 @@ class GameBoard(Static):
 
     def change_direction(self, direction: str) -> None:
         if direction in ["right", "left", "up", "down"]:
+            self.prev_direction = self.direction
             self.direction = direction
 
     def move_snake(self):
         if self.direction == "right":
+            if self.prev_direction == "left":
+                self.body.reverse()
+                self.prev_direction = None
             if self.body[-1][1] < self.width - 1:
                 new_coordinate = [
                     self.body[-1][0],
@@ -71,6 +76,9 @@ class GameBoard(Static):
             self.body.pop(0)
 
         if self.direction == "left":
+            if self.prev_direction == "right":
+                self.body.reverse()
+                self.prev_direction = None
             if self.body[-1][1] > 0:
                 new_coordinate = [
                     self.body[-1][0],
