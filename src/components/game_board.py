@@ -85,12 +85,17 @@ class GameBoard(Static):
     def move_snake(self):
         if self.direction == "right":
             if self.body.tail.value[1] < self.width - 1:
-                new_coordinate = [self.body.tail.value[0], self.body.tail.value[1]+1]
+                new_coordinate = [
+                    self.body.tail.value[0],
+                    self.body.tail.value[1]+1
+                ]
             else:
                 new_coordinate = [self.body.tail.value[0], 0]
 
             self.body.append(new_coordinate)
-            pixel = self.query_one(f"#p{new_coordinate[0]}_{new_coordinate[1]}")
+            pixel = self.query_one(
+                f"#p{new_coordinate[0]}_{new_coordinate[1]}"
+            )
             pixel.add_class("cell-deactivate")
 
             pixel = self.query_one(
