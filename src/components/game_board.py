@@ -24,9 +24,6 @@ class GameBoard(Static):
                         classes="cell"
                     )
 
-    def on_mount(self) -> None:
-        self.focus()
-
     def move_snake(self):
         pass
 
