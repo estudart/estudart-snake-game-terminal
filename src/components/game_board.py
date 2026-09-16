@@ -16,9 +16,7 @@ class GameBoard(Static):
         self.width = 60
         self.height = 40
         self.speed = 0.3
-        self.body = [[6, 1]]
-        self.body.append([6, 2])
-        self.body.append([6, 3])
+        self.body = [[6, 1], [6, 2], [6, 3]]
 
     def compose(self) -> ComposeResult:
         yield TimeDisplay("00:00:00.00", id="time-display")
