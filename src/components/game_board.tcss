@@ -1,0 +1,24 @@
+GameBoard #time-display {
+    border: solid green;
+    text-align: right;
+}
+
+GameBoard #board-grid {
+    width: 100%;
+    height: 1fr;
+    grid_size: 60 20;
+}
+
+GameBoard .cell {
+    width: 1;
+    height: 1;
+    background: green;
+    content-align: center middle;
+}
+
+GameBoard .test-cell {
+    width: 1;
+    height: 1;
+    background: black;
+    content-align: center middle;
+}
