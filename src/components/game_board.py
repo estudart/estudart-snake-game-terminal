@@ -51,6 +51,10 @@ class GameBoard(Static):
                 return
             if self.direction == "right" and new_direction == "left":
                 return
+            if self.direction == "up" and new_direction == "down":
+                return
+            if self.direction == "down" and new_direction == "up":
+                return
             self.prev_direction = self.direction
             self.direction = new_direction
 
@@ -97,5 +101,44 @@ class GameBoard(Static):
             pixel.remove_class("cell-deactivate")
             self.body.pop(0)
 
+        if self.direction == "down":
+            if self.body[-1][0] < self.height - 1:
+                new_coordinate = [
+                    self.body[-1][0] + 1,
+                    self.body[-1][1]
+                ]
+            else:
+                new_coordinate = [0, self.body[-1][1]]
 
-            
+            self.body.append(new_coordinate)
+            pixel = self.query_one(
+                f"#p{new_coordinate[0]}_{new_coordinate[1]}"
+            )
+            pixel.add_class("cell-deactivate")
+
+            pixel = self.query_one(
+                f"#p{self.body[0][0]}_{self.body[0][1]}"
+            )
+            pixel.remove_class("cell-deactivate")
+            self.body.pop(0)
+
+        if self.direction == "up":
+            if self.body[-1][0] > 0:
+                new_coordinate = [
+                    self.body[-1][0] - 1,
+                    self.body[-1][1]
+                ]
+            else:
+                new_coordinate = [self.height - 1, self.body[-1][1]]
+
+            self.body.append(new_coordinate)
+            pixel = self.query_one(
+                f"#p{new_coordinate[0]}_{new_coordinate[1]}"
+            )
+            pixel.add_class("cell-deactivate")
+
+            pixel = self.query_one(
+                f"#p{self.body[0][0]}_{self.body[0][1]}"
+            )
+            pixel.remove_class("cell-deactivate")
+            self.body.pop(0)
