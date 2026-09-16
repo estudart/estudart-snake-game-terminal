@@ -66,18 +66,6 @@ class GameBoard(Static):
             else:
                 new_coordinate = [self.body[-1][0], 0]
 
-            self.body.append(new_coordinate)
-            pixel = self.query_one(
-                f"#p{new_coordinate[0]}_{new_coordinate[1]}"
-            )
-            pixel.add_class("cell-deactivate")
-
-            pixel = self.query_one(
-                f"#p{self.body[0][0]}_{self.body[0][1]}"
-            )
-            pixel.remove_class("cell-deactivate")
-            self.body.pop(0)
-
         if self.direction == "left":
             if self.body[-1][1] > 0:
                 new_coordinate = [
@@ -86,39 +74,6 @@ class GameBoard(Static):
                 ]
             else:
                 new_coordinate = [self.body[-1][0], self.width - 1]
-
-            self.body.append(new_coordinate)
-            pixel = self.query_one(
-                f"#p{new_coordinate[0]}_{new_coordinate[1]}"
-            )
-            pixel.add_class("cell-deactivate")
-
-            pixel = self.query_one(
-                f"#p{self.body[0][0]}_{self.body[0][1]}"
-            )
-            pixel.remove_class("cell-deactivate")
-            self.body.pop(0)
-
-        if self.direction == "down":
-            if self.body[-1][0] < self.height - 1:
-                new_coordinate = [
-                    self.body[-1][0] + 1,
-                    self.body[-1][1]
-                ]
-            else:
-                new_coordinate = [0, self.body[-1][1]]
-
-            self.body.append(new_coordinate)
-            pixel = self.query_one(
-                f"#p{new_coordinate[0]}_{new_coordinate[1]}"
-            )
-            pixel.add_class("cell-deactivate")
-
-            pixel = self.query_one(
-                f"#p{self.body[0][0]}_{self.body[0][1]}"
-            )
-            pixel.remove_class("cell-deactivate")
-            self.body.pop(0)
 
         if self.direction == "up":
             if self.body[-1][0] > 0:
@@ -129,14 +84,23 @@ class GameBoard(Static):
             else:
                 new_coordinate = [self.height - 1, self.body[-1][1]]
 
-            self.body.append(new_coordinate)
-            pixel = self.query_one(
-                f"#p{new_coordinate[0]}_{new_coordinate[1]}"
-            )
-            pixel.add_class("cell-deactivate")
+        if self.direction == "down":
+            if self.body[-1][0] < self.height - 1:
+                new_coordinate = [
+                    self.body[-1][0] + 1,
+                    self.body[-1][1]
+                ]
+            else:
+                new_coordinate = [0, self.body[-1][1]]
 
-            pixel = self.query_one(
-                f"#p{self.body[0][0]}_{self.body[0][1]}"
-            )
-            pixel.remove_class("cell-deactivate")
-            self.body.pop(0)
+        self.body.append(new_coordinate)
+        pixel = self.query_one(
+            f"#p{new_coordinate[0]}_{new_coordinate[1]}"
+        )
+        pixel.add_class("cell-deactivate")
+
+        pixel = self.query_one(
+            f"#p{self.body[0][0]}_{self.body[0][1]}"
+        )
+        pixel.remove_class("cell-deactivate")
+        self.body.pop(0)
