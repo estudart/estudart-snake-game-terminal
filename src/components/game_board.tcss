@@ -6,19 +6,19 @@ GameBoard #time-display {
 GameBoard #board-grid {
     width: 120;
     height: 40;
-    grid_size: 60 20;
+    grid_size: 60 40;
 }
 
 GameBoard .cell {
     width: 2;
-    height: 2;
+    height: auto;
     background: green;
     content-align: center middle;
 }
 
 GameBoard .cell-deactivate {
     width: 2;
-    height: 2;
+    height: auto;
     background: black;
     content-align: center middle;
 }

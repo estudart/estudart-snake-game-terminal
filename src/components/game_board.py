@@ -14,7 +14,7 @@ class GameBoard(Static):
         self.direction = "right"
         self.prev_direction = None
         self.width = 60
-        self.height = 20
+        self.height = 40
         self.speed = 0.3
         self.body = [[6, 1]]
         self.body.append([6, 2])
