@@ -5,12 +5,50 @@ from textual.containers import Grid
 from src.components.time_display import TimeDisplay
 
 
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+
+
+class LinkedList:
+    def __init__(self, value) -> None:
+        new_node = Node(value)
+        self.head = new_node
+        self.tail = new_node
+        self.length = 1
+    
+    def pop_first(self):
+        if self.length == 0:
+            return None
+        temp = self.head
+        self.head = self.head.next
+        temp.next = None
+        self.length -= 1
+        if self.length == 0:
+            self.tail = None
+        return temp
+
+    def append(self, value):
+        new_node = Node(value)
+        if self.length == 0:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            self.tail.next = new_node
+            self.tail = new_node
+        self.length += 1
+        return True
+
+
 class GameBoard(Static):
     """Snake Game Board."""
 
     def __init__(self):
         super().__init__()
         self.game_timer = None
+        self.direction = "right"
+        self.body = LinkedList([1, 1])
 
     def compose(self) -> ComposeResult:
         yield TimeDisplay("00:00:00.00", id="time-display")
@@ -24,15 +62,28 @@ class GameBoard(Static):
                         classes="cell"
                     )
 
-    def move_snake(self):
-        pass
-
     def start(self):
-        pixel = self.query_one("#p1_1")
-        pixel.add_class("cell-deactivate")
         if self.game_timer is None:
             self.game_timer = self.set_interval(
-                0.5,
+                1,
                 self.move_snake
             )
 
+    def move_snake(self):
+        if self.direction == "right":
+            self.body.append(
+                [self.body.tail.value[0], self.body.tail.value[1]+1]
+            )
+            pixel = self.query_one(
+                f"#p{self.body.tail.value[0]}_{self.body.tail.value[1]+1}"
+            )
+            pixel.add_class("cell-deactivate")
+
+            pixel = self.query_one(
+                f"#p{self.body.head.value[0]}_{self.body.tail.value[1]}"
+            )
+            pixel.remove_class("cell-deactivate")
+            self.body.pop_first()
+
+
+            
