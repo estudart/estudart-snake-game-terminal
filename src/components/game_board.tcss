@@ -15,3 +15,10 @@ GameBoard .cell {
     background: green;
     content-align: center middle;
 }
+
+GameBoard .cell-deactivate {
+    width: 2;
+    height: 2;
+    background: black;
+    content-align: center middle;
+}
