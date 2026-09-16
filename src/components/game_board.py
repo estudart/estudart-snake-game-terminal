@@ -48,7 +48,9 @@ class GameBoard(Static):
         super().__init__()
         self.game_timer = None
         self.direction = "right"
-        self.body = LinkedList([1, 1])
+        self.body = LinkedList([6, 1])
+        self.body.append([6, 2])
+        self.body.append([6, 3])
 
     def compose(self) -> ComposeResult:
         yield TimeDisplay("00:00:00.00", id="time-display")
@@ -57,12 +59,20 @@ class GameBoard(Static):
             for row in range(20):
                 for col in range(60):
                     yield Static(
-                        f"+", 
+                        f"", 
                         id=f"p{row}_{col}", 
                         classes="cell"
                     )
 
     def start(self):
+        temp = self.body.head
+        while temp is not None:
+            pixel = self.query_one(
+                f"#p{temp.value[0]}_{temp.value[1]}"
+            )
+            pixel.add_class("cell-deactivate")
+            temp = temp.next
+
         if self.game_timer is None:
             self.game_timer = self.set_interval(
                 1,
@@ -71,16 +81,13 @@ class GameBoard(Static):
 
     def move_snake(self):
         if self.direction == "right":
-            self.body.append(
-                [self.body.tail.value[0], self.body.tail.value[1]+1]
-            )
-            pixel = self.query_one(
-                f"#p{self.body.tail.value[0]}_{self.body.tail.value[1]+1}"
-            )
+            new_coordinate = [self.body.tail.value[0], self.body.tail.value[1]+1]
+            self.body.append(new_coordinate)
+            pixel = self.query_one(f"#p{new_coordinate[0]}_{new_coordinate[1]}")
             pixel.add_class("cell-deactivate")
 
             pixel = self.query_one(
-                f"#p{self.body.head.value[0]}_{self.body.tail.value[1]}"
+                f"#p{self.body.head.value[0]}_{self.body.head.value[1]}"
             )
             pixel.remove_class("cell-deactivate")
             self.body.pop_first()
