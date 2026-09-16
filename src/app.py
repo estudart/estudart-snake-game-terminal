@@ -23,6 +23,18 @@ class SnakeGame(App):
     def get_board(self) -> GameBoard:
         return self.query_one(GameBoard)
 
+    def action_move_up(self):
+        self.get_board().change_direction("up")
+
+    def action_move_left(self):
+        self.get_board().change_direction("left")
+
+    def action_move_down(self):
+        self.get_board().change_direction("down")
+
+    def action_move_right(self):
+        self.get_board().change_direction("right")
+
     def action_start(self):
         board = self.get_board()
         board.start()
