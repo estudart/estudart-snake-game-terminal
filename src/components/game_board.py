@@ -13,10 +13,9 @@ class GameBoard(Static):
         with Grid(id="board-grid"):
             for row in range(20):
                 for col in range(60):
-                    if col == 5 and row == 1:
-                        yield Static(f"+", classes="test-cell")
-                    if col == 4 and row == 1:
-                        yield Static(f"+", classes="test-cell")
-                    else:
-                        yield Static(f"+++", classes="cell")
+                    yield Static(
+                        f"+", 
+                        id=f"p{row}_{col}", 
+                        classes="cell"
+                    )
 
