@@ -20,6 +20,7 @@ class GameBoard(Static):
         self.body = [[6, 1], [6, 2], [6, 3]]
 
         self.snake_food = SnakeFood()
+        self.food_coordinate = None
 
     def compose(self) -> ComposeResult:
         yield TimeDisplay("00:00:00.00", id="time-display")
@@ -52,14 +53,14 @@ class GameBoard(Static):
         food_coordinate = self.snake_food.get_food_coordinate(
             snake_body=self.body,
             width=self.width,
-            height=self.height
+            height=self.height,
         )
-
         food_pixel = self.query_one(
             f"#p{food_coordinate[0]}_{food_coordinate[1]}"
         )
-
         food_pixel.add_class("cell-deactivate")
+
+        self.food_coordinate = food_coordinate
 
     def change_direction(self, new_direction: str) -> None:
         if new_direction in ["right", "left", "up", "down"]:
