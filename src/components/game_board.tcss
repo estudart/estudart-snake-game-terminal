@@ -4,21 +4,21 @@ GameBoard #time-display {
 }
 
 GameBoard #board-grid {
-    width: 100%;
-    height: 1fr;
-    grid_size: 60 20;
+    width: 120;
+    height: 40;
+    grid_size: 60 40;
 }
 
 GameBoard .cell {
-    width: 1;
-    height: 1;
+    width: 2;
+    height: auto;
     background: green;
     content-align: center middle;
 }
 
-GameBoard .test-cell {
-    width: 1;
-    height: 1;
+GameBoard .cell-deactivate {
+    width: 2;
+    height: auto;
     background: black;
     content-align: center middle;
 }
