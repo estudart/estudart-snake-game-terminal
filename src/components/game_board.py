@@ -12,7 +12,7 @@ class GameBoard(Static):
         super().__init__()
         self.game_timer = None
         self.direction = "right"
-        self.prev_direction = None
+        self.latest_move = None
         self.width = 60
         self.height = 40
         self.speed = 0.3
@@ -45,15 +45,15 @@ class GameBoard(Static):
 
     def change_direction(self, new_direction: str) -> None:
         if new_direction in ["right", "left", "up", "down"]:
-            if self.direction == "left" and new_direction == "right":
+            if self.latest_move == "left" and new_direction == "right":
                 return
-            if self.direction == "right" and new_direction == "left":
+            if self.latest_move == "right" and new_direction == "left":
                 return
-            if self.direction == "up" and new_direction == "down":
+            if self.latest_move == "up" and new_direction == "down":
                 return
-            if self.direction == "down" and new_direction == "up":
+            if self.latest_move == "down" and new_direction == "up":
                 return
-            self.prev_direction = self.direction
+
             self.direction = new_direction
 
     def move_snake(self):
@@ -66,6 +66,8 @@ class GameBoard(Static):
             else:
                 new_coordinate = [self.body[-1][0], 0]
 
+            self.latest_move = "right"
+
         if self.direction == "left":
             if self.body[-1][1] > 0:
                 new_coordinate = [
@@ -74,6 +76,8 @@ class GameBoard(Static):
                 ]
             else:
                 new_coordinate = [self.body[-1][0], self.width - 1]
+            
+            self.latest_move = "left"
 
         if self.direction == "up":
             if self.body[-1][0] > 0:
@@ -84,6 +88,8 @@ class GameBoard(Static):
             else:
                 new_coordinate = [self.height - 1, self.body[-1][1]]
 
+            self.latest_move = "up"
+
         if self.direction == "down":
             if self.body[-1][0] < self.height - 1:
                 new_coordinate = [
@@ -92,6 +98,8 @@ class GameBoard(Static):
                 ]
             else:
                 new_coordinate = [0, self.body[-1][1]]
+
+            self.latest_move = "down"
 
         self.body.append(new_coordinate)
         pixel = self.query_one(
