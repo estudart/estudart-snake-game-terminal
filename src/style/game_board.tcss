@@ -1,6 +1,14 @@
+GameBoard Horizontal {
+    height: 4;
+}
+
 GameBoard #time-display {
-    border: solid green;
-    text-align: right;
+    width: 10%;
+}
+
+GameBoard Digits {
+    width: 10%;
+    text-align: left;
 }
 
 GameBoard #board-grid {
