@@ -12,10 +12,5 @@ class SnakeFood(Static):
     ):
         random_x_coordinate = random.randint(0, width)
         random_y_coordinate = random.randint(0, height)
-
-        food_coordinate = [random_y_coordinate, random_x_coordinate]
-
-        if food_coordinate in snake_body:
-            self.spawn_random(snake_body, width, height)
     
-        return food_coordinate
+        return [random_y_coordinate, random_x_coordinate]
