@@ -126,8 +126,11 @@ class GameBoard(Static):
         )
         pixel.add_class("cell-deactivate")
 
-        pixel = self.query_one(
-            f"#p{self.body[0][0]}_{self.body[0][1]}"
-        )
-        pixel.remove_class("cell-deactivate")
-        self.body.pop(0)
+        if new_coordinate != self.food_coordinate:
+            pixel = self.query_one(
+                f"#p{self.body[0][0]}_{self.body[0][1]}"
+            )
+            pixel.remove_class("cell-deactivate")
+            self.body.pop(0)
+        else:
+            self.spawn_food()
