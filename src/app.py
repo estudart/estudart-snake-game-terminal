@@ -4,7 +4,7 @@ from textual.widgets import Header, Footer, Static
 from src.components.game_board import GameBoard
 
 class SnakeGame(App):
-    CSS_PATH = ["components/game_board.tcss"]
+    CSS_PATH = ["style/game_board.tcss"]
 
     BINDINGS = [
         ("enter", "start", "Start Game"),
