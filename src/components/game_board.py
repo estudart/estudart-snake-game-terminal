@@ -1,9 +1,10 @@
 from textual.app import ComposeResult
-from textual.widgets import Static, Button, Footer, Header
+from textual.widgets import Static, Button, Footer, Header, Digits
 from textual.containers import Grid
 
 from src.components.time_display import TimeDisplay
 from src.components.snake_food import SnakeFood
+from src.components.score import Score
 
 
 class GameBoard(Static):
@@ -22,8 +23,12 @@ class GameBoard(Static):
         self.snake_food = SnakeFood()
         self.food_coordinate = None
 
+        self.score = Score()
+        self.score_panel = Digits(f"{self.score.value}")
+
     def compose(self) -> ComposeResult:
         yield TimeDisplay("00:00:00.00", id="time-display")
+        yield self.score_panel
 
         with Grid(id="board-grid"):
             for row in range(self.height):
@@ -67,7 +72,12 @@ class GameBoard(Static):
             f"#p{self.food_coordinate[0]}_{self.food_coordinate[1]}"
         )
         pixel.remove_class("snake-food")
+
         self.spawn_food()
+
+        self.score.add()
+        self.score_panel.update(f"{self.score.value}")
+
         self.game_timer.stop()
         self.speed/=1.2
         self.game_timer._interval = self.speed
