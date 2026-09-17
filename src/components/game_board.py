@@ -27,19 +27,20 @@ class GameBoard(Static):
         self.score_panel = Digits(f"{self.score.value}")
 
     def compose(self) -> ComposeResult:
-        with Horizontal():
+        with Horizontal(classes="header-container"):
             horizontal_list = [self.score_panel, TimeDisplay("00:00:00.00", id="time-display")]
             for item in horizontal_list:
                 yield item
 
-        with Grid(id="board-grid"):
-            for row in range(self.height):
-                for col in range(self.width):
-                    yield Static(
-                        f"", 
-                        id=f"p{row}_{col}", 
-                        classes="cell"
-                    )
+        with Horizontal(classes="board-container"):
+            with Grid(id="board-grid"):
+                for row in range(self.height):
+                    for col in range(self.width):
+                        yield Static(
+                            f"", 
+                            id=f"p{row}_{col}", 
+                            classes="cell"
+                        )
 
     def start(self):
         for coordinate in self.body:

@@ -1,5 +1,17 @@
-GameBoard Horizontal {
-    height: 4;
+Vertical {
+    width: 100%;
+    height: 100%;
+}
+
+GameBoard {
+    width: 100%;
+    height: 90%;
+}
+
+GameBoard .header-container {
+    height: 5;
+    align-horizontal: center;
+    border: solid blue;
 }
 
 GameBoard #time-display {
@@ -9,6 +21,12 @@ GameBoard #time-display {
 GameBoard Digits {
     width: 10%;
     text-align: left;
+}
+
+GameBoard .board-container {
+    width: 100%;
+    height: 100%;
+    align-horizontal: center;
 }
 
 GameBoard #board-grid {
