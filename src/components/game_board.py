@@ -52,15 +52,26 @@ class GameBoard(Static):
     def spawn_food(self):
         food_coordinate = self.snake_food.get_food_coordinate(
             snake_body=self.body,
-            width=self.width,
-            height=self.height,
+            width=self.width-1,
+            height=self.height-1,
         )
         food_pixel = self.query_one(
             f"#p{food_coordinate[0]}_{food_coordinate[1]}"
         )
-        food_pixel.add_class("cell-deactivate")
+        food_pixel.add_class("snake-food")
 
         self.food_coordinate = food_coordinate
+
+    def eat_food(self):
+        pixel = self.query_one(
+            f"#p{self.food_coordinate[0]}_{self.food_coordinate[1]}"
+        )
+        pixel.remove_class("snake-food")
+        self.spawn_food()
+        self.game_timer.stop()
+        self.speed/=1.2
+        self.game_timer._interval = self.speed
+        self.game_timer._start()
 
     def change_direction(self, new_direction: str) -> None:
         if new_direction in ["right", "left", "up", "down"]:
@@ -133,4 +144,4 @@ class GameBoard(Static):
             pixel.remove_class("cell-deactivate")
             self.body.pop(0)
         else:
-            self.spawn_food()
+            self.eat_food()

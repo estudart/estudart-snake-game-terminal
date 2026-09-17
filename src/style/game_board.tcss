@@ -22,3 +22,8 @@ GameBoard .cell-deactivate {
     background: black;
     content-align: center middle;
 }
+
+GameBoard .snake-food {
+    width: 2;
+    background: red;
+}
