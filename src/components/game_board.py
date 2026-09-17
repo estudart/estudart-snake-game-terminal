@@ -3,6 +3,7 @@ from textual.widgets import Static, Button, Footer, Header
 from textual.containers import Grid
 
 from src.components.time_display import TimeDisplay
+from src.components.snake_food import SnakeFood
 
 
 class GameBoard(Static):
@@ -17,6 +18,8 @@ class GameBoard(Static):
         self.height = 40
         self.speed = 0.3
         self.body = [[6, 1], [6, 2], [6, 3]]
+
+        self.snake_food = SnakeFood()
 
     def compose(self) -> ComposeResult:
         yield TimeDisplay("00:00:00.00", id="time-display")
@@ -37,11 +40,26 @@ class GameBoard(Static):
             )
             pixel.add_class("cell-deactivate")
 
+        self.spawn_food()
+
         if self.game_timer is None:
             self.game_timer = self.set_interval(
                 self.speed,
                 self.move_snake
             )
+
+    def spawn_food(self):
+        food_coordinate = self.snake_food.get_food_coordinate(
+            snake_body=self.body,
+            width=self.width,
+            height=self.height
+        )
+
+        food_pixel = self.query_one(
+            f"#p{food_coordinate[0]}_{food_coordinate[1]}"
+        )
+
+        food_pixel.add_class("cell-deactivate")
 
     def change_direction(self, new_direction: str) -> None:
         if new_direction in ["right", "left", "up", "down"]:
