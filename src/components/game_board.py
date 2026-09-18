@@ -1,8 +1,10 @@
 from textual.app import ComposeResult
-from textual.widgets import Static, Button, Footer, Header
-from textual.containers import Grid
+from textual.widgets import Static, Button, Footer, Header, Digits
+from textual.containers import Grid, Horizontal
 
 from src.components.time_display import TimeDisplay
+from src.components.snake_food import SnakeFood
+from src.components.score import Score
 
 
 class GameBoard(Static):
@@ -18,17 +20,27 @@ class GameBoard(Static):
         self.speed = 0.3
         self.body = [[6, 1], [6, 2], [6, 3]]
 
-    def compose(self) -> ComposeResult:
-        yield TimeDisplay("00:00:00.00", id="time-display")
+        self.snake_food = SnakeFood()
+        self.food_coordinate = None
 
-        with Grid(id="board-grid"):
-            for row in range(self.height):
-                for col in range(self.width):
-                    yield Static(
-                        f"", 
-                        id=f"p{row}_{col}", 
-                        classes="cell"
-                    )
+        self.score = Score()
+        self.score_panel = Digits(f"{self.score.value}")
+
+    def compose(self) -> ComposeResult:
+        with Horizontal(classes="header-container"):
+            horizontal_list = [self.score_panel, TimeDisplay("00:00:00.00", id="time-display")]
+            for item in horizontal_list:
+                yield item
+
+        with Horizontal(classes="board-container"):
+            with Grid(id="board-grid"):
+                for row in range(self.height):
+                    for col in range(self.width):
+                        yield Static(
+                            f"", 
+                            id=f"p{row}_{col}", 
+                            classes="cell"
+                        )
 
     def start(self):
         for coordinate in self.body:
@@ -37,11 +49,42 @@ class GameBoard(Static):
             )
             pixel.add_class("cell-deactivate")
 
+        self.spawn_food()
+
         if self.game_timer is None:
             self.game_timer = self.set_interval(
                 self.speed,
                 self.move_snake
             )
+
+    def spawn_food(self):
+        food_coordinate = self.snake_food.get_food_coordinate(
+            snake_body=self.body,
+            width=self.width-1,
+            height=self.height-1,
+        )
+        food_pixel = self.query_one(
+            f"#p{food_coordinate[0]}_{food_coordinate[1]}"
+        )
+        food_pixel.add_class("snake-food")
+
+        self.food_coordinate = food_coordinate
+
+    def eat_food(self):
+        pixel = self.query_one(
+            f"#p{self.food_coordinate[0]}_{self.food_coordinate[1]}"
+        )
+        pixel.remove_class("snake-food")
+
+        self.spawn_food()
+
+        self.score.add()
+        self.score_panel.update(f"{self.score.value}")
+
+        self.game_timer.stop()
+        self.speed/=1.2
+        self.game_timer._interval = self.speed
+        self.game_timer._start()
 
     def change_direction(self, new_direction: str) -> None:
         if new_direction in ["right", "left", "up", "down"]:
@@ -107,8 +150,11 @@ class GameBoard(Static):
         )
         pixel.add_class("cell-deactivate")
 
-        pixel = self.query_one(
-            f"#p{self.body[0][0]}_{self.body[0][1]}"
-        )
-        pixel.remove_class("cell-deactivate")
-        self.body.pop(0)
+        if new_coordinate != self.food_coordinate:
+            pixel = self.query_one(
+                f"#p{self.body[0][0]}_{self.body[0][1]}"
+            )
+            pixel.remove_class("cell-deactivate")
+            self.body.pop(0)
+        else:
+            self.eat_food()
