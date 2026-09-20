@@ -1,4 +1,4 @@
-
+import random
 
 class Snake:
     def __init__(

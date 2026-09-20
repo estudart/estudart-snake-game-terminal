@@ -20,7 +20,7 @@ class GameBoard(Static):
         self.speed = 0.3
 
         self.snake = Snake(
-            snake_body=[[6, 1], [6, 2], [6, 3]]
+            body=[[6, 1], [6, 2], [6, 3]]
         )
         self.food_coordinate = None
 
@@ -59,8 +59,7 @@ class GameBoard(Static):
             )
 
     def spawn_food(self):
-        food_coordinate = self.snake_food.get_food_coordinate(
-            snake_body=self.snake.body,
+        food_coordinate = self.snake.get_food_coordinate(
             width=self.width-1,
             height=self.height-1,
         )
