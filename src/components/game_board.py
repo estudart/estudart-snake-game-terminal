@@ -3,7 +3,7 @@ from textual.widgets import Static, Button, Footer, Header, Digits
 from textual.containers import Grid, Horizontal
 
 from src.components.time_display import TimeDisplay
-from src.components.snake_food import SnakeFood
+from src.components.snake import Snake
 from src.components.score import Score
 
 
@@ -18,9 +18,10 @@ class GameBoard(Static):
         self.width = 60
         self.height = 40
         self.speed = 0.3
-        self.body = [[6, 1], [6, 2], [6, 3]]
 
-        self.snake_food = SnakeFood()
+        self.snake = Snake(
+            snake_body=[[6, 1], [6, 2], [6, 3]]
+        )
         self.food_coordinate = None
 
         self.score = Score()
@@ -43,7 +44,7 @@ class GameBoard(Static):
                         )
 
     def start(self):
-        for coordinate in self.body:
+        for coordinate in self.snake.body:
             pixel = self.query_one(
                 f"#p{coordinate[0]}_{coordinate[1]}"
             )
@@ -59,7 +60,7 @@ class GameBoard(Static):
 
     def spawn_food(self):
         food_coordinate = self.snake_food.get_food_coordinate(
-            snake_body=self.body,
+            snake_body=self.snake.body,
             width=self.width-1,
             height=self.height-1,
         )
@@ -101,50 +102,50 @@ class GameBoard(Static):
 
     def move_snake(self):
         if self.direction == "right":
-            if self.body[-1][1] < self.width - 1:
+            if self.snake.body[-1][1] < self.width - 1:
                 new_coordinate = [
-                    self.body[-1][0],
-                    self.body[-1][1]+1
+                    self.snake.body[-1][0],
+                    self.snake.body[-1][1]+1
                 ]
             else:
-                new_coordinate = [self.body[-1][0], 0]
+                new_coordinate = [self.snake.body[-1][0], 0]
 
             self.latest_move = "right"
 
         if self.direction == "left":
-            if self.body[-1][1] > 0:
+            if self.snake.body[-1][1] > 0:
                 new_coordinate = [
-                    self.body[-1][0],
-                    self.body[-1][1] - 1
+                    self.snake.body[-1][0],
+                    self.snake.body[-1][1] - 1
                 ]
             else:
-                new_coordinate = [self.body[-1][0], self.width - 1]
+                new_coordinate = [self.snake.body[-1][0], self.width - 1]
             
             self.latest_move = "left"
 
         if self.direction == "up":
-            if self.body[-1][0] > 0:
+            if self.snake.body[-1][0] > 0:
                 new_coordinate = [
-                    self.body[-1][0] - 1,
-                    self.body[-1][1]
+                    self.snake.body[-1][0] - 1,
+                    self.snake.body[-1][1]
                 ]
             else:
-                new_coordinate = [self.height - 1, self.body[-1][1]]
+                new_coordinate = [self.height - 1, self.snake.body[-1][1]]
 
             self.latest_move = "up"
 
         if self.direction == "down":
-            if self.body[-1][0] < self.height - 1:
+            if self.snake.body[-1][0] < self.height - 1:
                 new_coordinate = [
-                    self.body[-1][0] + 1,
-                    self.body[-1][1]
+                    self.snake.body[-1][0] + 1,
+                    self.snake.body[-1][1]
                 ]
             else:
-                new_coordinate = [0, self.body[-1][1]]
+                new_coordinate = [0, self.snake.body[-1][1]]
 
             self.latest_move = "down"
 
-        self.body.append(new_coordinate)
+        self.snake.body.append(new_coordinate)
         pixel = self.query_one(
             f"#p{new_coordinate[0]}_{new_coordinate[1]}"
         )
@@ -152,9 +153,9 @@ class GameBoard(Static):
 
         if new_coordinate != self.food_coordinate:
             pixel = self.query_one(
-                f"#p{self.body[0][0]}_{self.body[0][1]}"
+                f"#p{self.snake.body[0][0]}_{self.snake.body[0][1]}"
             )
             pixel.remove_class("cell-deactivate")
-            self.body.pop(0)
+            self.snake.body.pop(0)
         else:
             self.eat_food()
