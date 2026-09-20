@@ -1,11 +1,14 @@
-from textual.app import ComposeResult
-from textual.widgets import Static, Button, Footer, Header
-from textual.containers import Grid
 
 
-class Snake(Static):
-    def __init__(self):
-        self.size = 10
+class Snake:
+    def is_collision(
+        self,
+        snake_body: list[list]
+    ) -> bool:
+        snake_head = snake_body[-1]
+
+        for snake_coordinate in snake_body[:-1]:
+            if snake_coordinate == snake_head:
+                return True
         
-    def compose(self) -> ComposeResult:
-        pass
+        return False
