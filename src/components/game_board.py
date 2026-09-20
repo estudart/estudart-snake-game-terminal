@@ -28,7 +28,7 @@ class GameBoard(Static):
         self.score_panel = Digits(f"{self.score.value}")
 
     def compose(self) -> ComposeResult:
-        with Horizontal(classes="header-container"):
+        with Horizontal(id="header-container", classes="header-container"):
             horizontal_list = [self.score_panel, TimeDisplay("00:00:00.00", id="time-display")]
             for item in horizontal_list:
                 yield item
@@ -42,6 +42,15 @@ class GameBoard(Static):
                             id=f"p{row}_{col}", 
                             classes="cell"
                         )
+
+    def game_over(self):
+        self.game_timer.stop()
+        header = self.query_one("#header-container")
+        board = self.query_one("#board-grid")
+        header.remove()
+        board.remove()
+
+        self.mount(Static("GAME OVER"))
 
     def start(self):
         for coordinate in self.snake.body:
@@ -144,12 +153,6 @@ class GameBoard(Static):
 
             self.latest_move = "down"
 
-        self.snake.body.append(new_coordinate)
-        pixel = self.query_one(
-            f"#p{new_coordinate[0]}_{new_coordinate[1]}"
-        )
-        pixel.add_class("cell-deactivate")
-
         if new_coordinate != self.food_coordinate:
             pixel = self.query_one(
                 f"#p{self.snake.body[0][0]}_{self.snake.body[0][1]}"
@@ -158,3 +161,12 @@ class GameBoard(Static):
             self.snake.body.pop(0)
         else:
             self.eat_food()
+
+        self.snake.body.append(new_coordinate)
+        pixel = self.query_one(
+            f"#p{new_coordinate[0]}_{new_coordinate[1]}"
+        )
+        pixel.add_class("cell-deactivate")
+
+        if self.snake.is_collision():
+            self.game_over()
