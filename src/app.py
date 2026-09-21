@@ -19,7 +19,7 @@ class SnakeGame(App):
         yield Header(show_clock=True)
         
         with Vertical(classes="root"):
-            yield Static("Welcome to the Python Snake Game!")
+            yield Static("Welcome the Game Launcher!")
             yield GameBoard()
         
         yield Footer()
