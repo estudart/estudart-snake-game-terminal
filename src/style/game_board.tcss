@@ -25,7 +25,7 @@ GameBoard Digits {
 
 GameBoard .board-container {
     width: 100%;
-    height: auto;
+    height: 90%;
     align-horizontal: center;
     align-vertical: middle;
 }
@@ -53,4 +53,10 @@ GameBoard .cell-deactivate {
 GameBoard .snake-food {
     width: 2;
     background: red;
+}
+
+GameBoard .game-over {
+    color: red;
+    text-style: bold;
+    content-align: center middle;
 }

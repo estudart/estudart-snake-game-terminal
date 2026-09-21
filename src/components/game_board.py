@@ -20,7 +20,7 @@ class GameBoard(Static):
         self.speed = 0.3
 
         self.snake = Snake(
-            body=[[6, 1], [6, 2], [6, 3]]
+            body=[[6, 1], [6, 2], [6, 3], [6, 4], [6, 5]]
         )
         self.food_coordinate = None
 
@@ -33,7 +33,7 @@ class GameBoard(Static):
             for item in horizontal_list:
                 yield item
 
-        with Horizontal(classes="board-container"):
+        with Horizontal(id="board-container", classes="board-container"):
             with Grid(id="board-grid"):
                 for row in range(self.height):
                     for col in range(self.width):
@@ -50,7 +50,8 @@ class GameBoard(Static):
         header.remove()
         board.remove()
 
-        self.mount(Static("GAME OVER"))
+        self.query_one("#board-container").mount(
+            Static("GAME OVER!", classes="game-over"))
 
     def start(self):
         for coordinate in self.snake.body:
