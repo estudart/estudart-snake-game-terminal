@@ -7,7 +7,7 @@ from src.components.snake import Snake
 from src.components.score import Score
 
 
-class GameBoard(Static):
+class SnakeGameBoard(Static):
     """Snake Game Board."""
 
     def __init__(self):

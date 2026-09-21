@@ -3,59 +3,59 @@ Vertical {
     height: 100%;
 }
 
-GameBoard {
+SnakeGameBoard {
     width: 100%;
     height: 90%;
 }
 
-GameBoard .header-container {
+SnakeGameBoard .header-container {
     height: 5;
     align-horizontal: center;
     border: solid blue;
 }
 
-GameBoard #time-display {
+SnakeGameBoard #time-display {
     width: 10%;
 }
 
-GameBoard Digits {
+SnakeGameBoard Digits {
     width: 10%;
     text-align: left;
 }
 
-GameBoard .board-container {
+SnakeGameBoard .board-container {
     width: 100%;
     height: 90%;
     align-horizontal: center;
     align-vertical: middle;
 }
 
-GameBoard #board-grid {
+SnakeGameBoard #board-grid {
     width: 120;
     height: 40;
     grid_size: 60 40;
 }
 
-GameBoard .cell {
+SnakeGameBoard .cell {
     width: 2;
     height: auto;
     background: green;
     content-align: center middle;
 }
 
-GameBoard .cell-deactivate {
+SnakeGameBoard .cell-deactivate {
     width: 2;
     height: auto;
     background: black;
     content-align: center middle;
 }
 
-GameBoard .snake-food {
+SnakeGameBoard .snake-food {
     width: 2;
     background: red;
 }
 
-GameBoard .game-over {
+SnakeGameBoard .game-over {
     color: red;
     text-style: bold;
     content-align: center middle;

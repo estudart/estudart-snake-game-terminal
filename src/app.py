@@ -2,7 +2,7 @@ from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, Static
 from textual.containers import Vertical
 
-from src.components.game_board import GameBoard
+from src.components.snake_game_board import SnakeGameBoard
 
 class SnakeGame(App):
     CSS_PATH = ["style/game_board.tcss"]
@@ -20,12 +20,12 @@ class SnakeGame(App):
         
         with Vertical(classes="root"):
             yield Static("Welcome the Game Launcher!")
-            yield GameBoard()
+            yield SnakeGameBoard()
         
         yield Footer()
 
-    def get_board(self) -> GameBoard:
-        return self.query_one(GameBoard)
+    def get_board(self) -> SnakeGameBoard:
+        return self.query_one(SnakeGameBoard)
 
     def action_move_up(self):
         self.get_board().change_direction("up")
