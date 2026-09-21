@@ -15,6 +15,10 @@ class SnakeGame(App):
         ("d", "move_right", "Move Right"),
     ]
 
+    def __init__(self):
+        super().__init__()
+        self._current_game = None
+
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
         
